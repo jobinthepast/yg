@@ -19,10 +19,10 @@
     // 3. This function creates/retrieves the widget after the API code downloads
     function onYouglishAPIReady() {
       // Retrieve the widget object based on your custom <a> tag ID
-      //widget = YG.getWidget("yg-widget-0");
       widget = new YG.Widget("yg-widget-0", {
           width: 640,
-          components: 9, // Standard UI components
+          //components: 9, // Standard UI components
+          components: 16475, // Standard UI components
           events: {
               'onFetchDone': onFetchDone,
               'onVideoChange': onVideoChange,
@@ -36,16 +36,16 @@
       widget.addEventListener("onCaptionConsumed", "onCaptionConsumed");
 
       // 4. Fetch the query restricting results specifically to the US accent
-      widget.fetch("pronunciation", "english", "us");
+      widget.fetch("", "english", "us");
     }
 
     // 5. The API calls this method when the search is done
     function onFetchDone(event) {
-      if (event.totalResult === 0) {
-        alert("No result found");
-      } else {
+      //if (event.totalResult === 0) {
+      //  alert("No result found");
+      //} else {
         totalTracks = event.totalResult;
-      }
+      //}
     }
 
     // 6. The API calls this method when switching to a new video
