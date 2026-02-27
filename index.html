@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Personalized YouGlish Widget</title>
+</head>
+<body>
+
+  <!-- 1. Your customized widget container -->
+  <a id="yg-widget-0" class="youglish-widget" data-query="great%20power" data-lang="english" data-components="8413" data-bkg-color="theme_light" rel="nofollow" href="https://youglish.com">Visit YouGlish.com</a>
+
+  <!-- 2. YouGlish widget API script -->
+  <script async src="https://youglish.com/public/emb/widget.js" charset="utf-8"></script>
+
+  <script>
+    var widget;
+    var views = 0, curTrack = 0, totalTracks = 0;
+
+    // 3. This function creates/retrieves the widget after the API code downloads
+    function onYouglishAPIReady() {
+      // Retrieve the widget object based on your custom <a> tag ID
+      //widget = YG.getWidget("yg-widget-0");
+      widget = new YG.Widget("yg-widget-0", {
+          width: 640,
+          components: 9, // Standard UI components
+          events: {
+              'onFetchDone': onFetchDone,
+              'onVideoChange': onVideoChange,
+              'onCaptionConsumed': onCaptionConsumed
+          }
+      });
+
+      // Register event listeners by passing the event name and function name as strings
+      widget.addEventListener("onFetchDone", "onFetchDone");
+      widget.addEventListener("onVideoChange", "onVideoChange");
+      widget.addEventListener("onCaptionConsumed", "onCaptionConsumed");
+
+      // 4. Fetch the query restricting results specifically to the US accent
+      widget.fetch("pronunciation", "english", "us");
+    }
+
+    // 5. The API calls this method when the search is done
+    function onFetchDone(event) {
+      if (event.totalResult === 0) {
+        alert("No result found");
+      } else {
+        totalTracks = event.totalResult;
+      }
+    }
+
+    // 6. The API calls this method when switching to a new video
+    function onVideoChange(event) {
+      curTrack = event.trackNumber;
+      views = 0;
+    }
+
+    // 7. The API calls this method when a caption is fully consumed
+    function onCaptionConsumed(event) {
+      if (++views < 3) {
+        widget.replay();
+      } else if (curTrack < totalTracks) {
+        widget.next();
+      }
+    }
+  </script>
+</body>
+</html>
